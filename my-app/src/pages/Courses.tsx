@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 // Importing the types and data from your external file
-import { allCourses} from '@/components/Courses/CourseData';
-import type { Course } from '@/components/Courses/CourseData';
-import CourseCard from '@/components/Courses/CourseCard';
-import CourseDetail from '@/components/Courses/CourseDetail';
+import { allCourses } from "@/components/Courses/CourseData";
+import type { Course } from "@/components/Courses/CourseData";
+import CourseCard from "@/components/Courses/CourseCard";
+import CourseDetail from "@/components/Courses/CourseDetail";
 
 const Courses: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [search, setSearch] = useState('');
-  const [filterRating, setFilterRating] = useState<number | 'All'>('All');
-  const [filterDuration, setFilterDuration] =
-    useState<'All' | 'Short' | 'Medium' | 'Long'>('All');
+  const [search, setSearch] = useState("");
+  const [filterRating, setFilterRating] = useState<number | "All">("All");
+  const [filterDuration, setFilterDuration] = useState<
+    "All" | "Short" | "Medium" | "Long"
+  >("All");
 
   // Logic for filtering courses remains the same, but uses the imported 'allCourses'
   const filteredCourses = allCourses.filter((course) => {
@@ -19,13 +20,13 @@ const Courses: React.FC = () => {
       course.instructor.toLowerCase().includes(search.toLowerCase());
 
     const matchesRating =
-      filterRating === 'All' || course.rating === filterRating;
+      filterRating === "All" || course.rating === filterRating;
 
     let matchesDuration = true;
-    if (filterDuration === 'Short') matchesDuration = course.hours < 5;
-    else if (filterDuration === 'Medium')
+    if (filterDuration === "Short") matchesDuration = course.hours < 5;
+    else if (filterDuration === "Medium")
       matchesDuration = course.hours >= 5 && course.hours <= 10;
-    else if (filterDuration === 'Long') matchesDuration = course.hours > 10;
+    else if (filterDuration === "Long") matchesDuration = course.hours > 10;
 
     return matchesSearch && matchesRating && matchesDuration;
   });
@@ -65,10 +66,11 @@ const Courses: React.FC = () => {
 
           <div className="flex gap-3 w-full md:w-auto">
             <select
+              title="filterRating"
               value={filterRating}
               onChange={(e) =>
                 setFilterRating(
-                  e.target.value === 'All' ? 'All' : Number(e.target.value)
+                  e.target.value === "All" ? "All" : Number(e.target.value)
                 )
               }
               className="px-4 py-3 bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
@@ -80,10 +82,11 @@ const Courses: React.FC = () => {
             </select>
 
             <select
+              title="filterDuration"
               value={filterDuration}
               onChange={(e) =>
                 setFilterDuration(
-                  e.target.value as 'All' | 'Short' | 'Medium' | 'Long'
+                  e.target.value as "All" | "Short" | "Medium" | "Long"
                 )
               }
               className="px-4 py-3 bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"

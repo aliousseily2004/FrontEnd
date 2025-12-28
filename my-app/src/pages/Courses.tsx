@@ -1,36 +1,34 @@
-import React, { useState } from 'react';
-// Importing the types and data from your external file
-import { allCourses} from '@/components/Courses/CourseData';
-import type { Course } from '@/components/Courses/CourseData';
-import CourseCard from '@/components/Courses/CourseCard';
-import CourseDetail from '@/components/Courses/CourseDetail';
+import React, { useState } from "react";
+import { allCourses } from "@/components/Courses/CourseData";
+import type { Course } from "@/components/Courses/CourseData";
+import CourseCard from "@/components/Courses/CourseCard";
+import CourseDetail from "@/components/Courses/CourseDetail";
 
 const Courses: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [search, setSearch] = useState('');
-  const [filterRating, setFilterRating] = useState<number | 'All'>('All');
-  const [filterDuration, setFilterDuration] =
-    useState<'All' | 'Short' | 'Medium' | 'Long'>('All');
+  const [search, setSearch] = useState("");
+  const [filterRating, setFilterRating] = useState<number | "All">("All");
+  const [filterDuration, setFilterDuration] = useState<
+    "All" | "Short" | "Medium" | "Long"
+  >("All");
 
-  // Logic for filtering courses remains the same, but uses the imported 'allCourses'
   const filteredCourses = allCourses.filter((course) => {
     const matchesSearch =
       course.title.toLowerCase().includes(search.toLowerCase()) ||
       course.instructor.toLowerCase().includes(search.toLowerCase());
 
     const matchesRating =
-      filterRating === 'All' || course.rating === filterRating;
+      filterRating === "All" || course.rating === filterRating;
 
     let matchesDuration = true;
-    if (filterDuration === 'Short') matchesDuration = course.hours < 5;
-    else if (filterDuration === 'Medium')
+    if (filterDuration === "Short") matchesDuration = course.hours < 5;
+    else if (filterDuration === "Medium")
       matchesDuration = course.hours >= 5 && course.hours <= 10;
-    else if (filterDuration === 'Long') matchesDuration = course.hours > 10;
+    else if (filterDuration === "Long") matchesDuration = course.hours > 10;
 
     return matchesSearch && matchesRating && matchesDuration;
   });
 
-  // ✅ COURSE DETAIL VIEW
   if (selectedCourse) {
     return (
       <CourseDetail
@@ -40,38 +38,45 @@ const Courses: React.FC = () => {
     );
   }
 
-  // ✅ DASHBOARD GRID VIEW
   return (
-    <div className="mt-12 px-4 pb-12 min-h-screen bg-gray-50/50">
-      <div className="max-w-7xl mx-auto mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          My Learning Dashboard
-        </h1>
-        <p className="text-gray-500">Continue your journey to mastery.</p>
+    <div className="mt-12 min-h-screen bg-background px-4 pb-12 text-foreground">
+      <div className="mx-auto mb-8 max-w-7xl">
+        <h1 className="mb-2 text-3xl font-bold">My Learning Dashboard</h1>
+        <p className="text-muted-foreground">
+          Continue your journey to mastery.
+        </p>
       </div>
 
       {/* Filters Section */}
-      <div className="max-w-7xl mx-auto bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-10">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-5">
+      <div className="mx-auto mb-10 max-w-7xl rounded-2xl border border-border bg-card p-5 shadow-sm">
+        <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
           <div className="w-full md:flex-1">
+            <label htmlFor="courseSearch" className="sr-only">
+              Search by course title or instructor
+            </label>
             <input
+              id="courseSearch"
               type="text"
               placeholder="Search by course title or instructor..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-4 pr-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+              className="h-12 w-full rounded-xl border border-border bg-background px-4 text-sm outline-none transition focus:ring-2 focus:ring-ring"
             />
           </div>
 
-          <div className="flex gap-3 w-full md:w-auto">
+          <div className="flex w-full gap-3 md:w-auto">
+            <label className="sr-only" htmlFor="filterRating">
+              Filter by rating
+            </label>
             <select
+              id="filterRating"
               value={filterRating}
               onChange={(e) =>
                 setFilterRating(
-                  e.target.value === 'All' ? 'All' : Number(e.target.value)
+                  e.target.value === "All" ? "All" : Number(e.target.value)
                 )
               }
-              className="px-4 py-3 bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
+              className="h-12 w-full rounded-xl border border-border bg-background px-4 text-sm outline-none transition focus:ring-2 focus:ring-ring md:w-auto"
             >
               <option value="All">All Ratings</option>
               <option value={5}>5 ⭐ Stars</option>
@@ -79,14 +84,18 @@ const Courses: React.FC = () => {
               <option value={3}>3 ⭐ Stars</option>
             </select>
 
+            <label className="sr-only" htmlFor="filterDuration">
+              Filter by duration
+            </label>
             <select
+              id="filterDuration"
               value={filterDuration}
               onChange={(e) =>
                 setFilterDuration(
-                  e.target.value as 'All' | 'Short' | 'Medium' | 'Long'
+                  e.target.value as "All" | "Short" | "Medium" | "Long"
                 )
               }
-              className="px-4 py-3 bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
+              className="h-12 w-full rounded-xl border border-border bg-background px-4 text-sm outline-none transition focus:ring-2 focus:ring-ring md:w-auto"
             >
               <option value="All">All Durations</option>
               <option value="Short">Short (&lt; 5h)</option>
@@ -98,14 +107,17 @@ const Courses: React.FC = () => {
       </div>
 
       {/* Course Cards Grid */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {filteredCourses.map((course, index) => (
           <div
             key={index}
             onClick={() => setSelectedCourse(course)}
             className="cursor-pointer transition-transform hover:scale-[1.02]"
           >
-            <CourseCard {...course} />
+            {/* Optional wrapper to ensure cards look consistent in themed UI */}
+            <div className="rounded-2xl border border-border bg-card">
+              <CourseCard {...course} />
+            </div>
           </div>
         ))}
       </div>

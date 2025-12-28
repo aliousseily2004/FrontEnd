@@ -1,1 +1,135 @@
 @import "tailwindcss";
+
+/* 1. THEME DEFINITIONS (Must be at the top) */
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --font-sans: "Inter", ui-sans-serif, system-ui;
+  --font-display: "Poppins", sans-serif;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --container-screens-2xl: 100%;
+  --container-screens-xl: 100%;
+  --container-screens-lg: 100%;
+  --container-screens-md: 100%;
+  --container-screens-sm: 100%;
+}
+
+/* 2. VARIABLE DEFINITIONS */
+@layer base {
+  :root {
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    /* THIS is what gives that nice “accent tint” */
+    --accent: 199 89% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 217 91% 60%;
+    --radius: 0.75rem;
+    /* ... keep all your other :root variables here ... */
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(217 91% 60%) 0%,
+      hsl(199 89% 48%) 100%
+    );
+  }
+
+  .dark {
+    --card: 222 47% 13%;
+    --card-foreground: 210 40% 98%;
+
+    --input: 217 33% 17%;
+    --ring: 217 91% 60%;
+
+    --primary: 217 91% 60%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 199 89% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    /* ... keep all your other .dark variables here ... */
+  }
+}
+
+/* 3. BASE STYLES */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+}
+
+/* 4. COMPONENTS & UTILITIES */
+@layer components {
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .progress-bar {
+    @apply w-full rounded-full bg-muted overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full rounded-full bg-primary transition-all duration-700 ease-out;
+  }
+
+  .gradient-bg {
+    background: var(--gradient-primary);
+  }
+  /* ... keep your other components ... */
+}
+
+@layer utilities {
+  /* ... keep your animations here ... */
+}

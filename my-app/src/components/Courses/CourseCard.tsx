@@ -1,5 +1,5 @@
-import React from 'react';
-import { BookOpen, Clock, Star, ArrowRight } from 'lucide-react';
+import React from "react";
+import { BookOpen, Clock, Star, ArrowRight } from "lucide-react";
 
 interface CourseCardProps {
   title: string;
@@ -13,26 +13,40 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({
-  title, description, instructor, imageUrl, rating, lessons, hours, progress,
+  title,
+  description,
+  instructor,
+  imageUrl,
+  rating,
+  lessons,
+  hours,
+  progress,
 }) => {
   return (
     <div className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
       {/* Image Container */}
       <div className="relative overflow-hidden">
-        <img 
-          className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-500" 
-          src={imageUrl} 
-          alt={title} 
+        <img
+          className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-500"
+          src={imageUrl}
+          alt={title}
         />
         <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
-          <span className="text-xs font-semibold text-blue-600">{instructor}</span>
+          <span className="text-xs font-semibold text-blue-600">
+            {instructor}
+          </span>
         </div>
       </div>
 
       <div className="p-5 flex flex-col grow">
         <div className="flex items-center gap-1 mb-2">
           {[...Array(5)].map((_, i) => (
-            <Star key={i} size={14} fill={i < rating ? "#f59e0b" : "none"} className={i < rating ? "text-yellow-500" : "text-gray-300"} />
+            <Star
+              key={i}
+              size={14}
+              fill={i < rating ? "#f59e0b" : "none"}
+              className={i < rating ? "text-yellow-500" : "text-gray-300"}
+            />
           ))}
           <span className="text-xs text-gray-400 ml-1">({rating}.0)</span>
         </div>
@@ -59,7 +73,9 @@ const CourseCard: React.FC<CourseCardProps> = ({
         {/* Progress Section */}
         <div className="mt-auto">
           <div className="flex justify-between items-center mb-1.5">
-            <span className="text-xs font-semibold text-gray-700">Course Progress</span>
+            <span className="text-xs font-semibold text-gray-700">
+              Course Progress
+            </span>
             <span className="text-xs font-bold text-blue-600">{progress}%</span>
           </div>
           <div className="w-full bg-gray-100 rounded-full h-2">
@@ -68,10 +84,13 @@ const CourseCard: React.FC<CourseCardProps> = ({
               style={{ width: `${progress}%` }}
             ></div>
           </div>
-          
+
           <button className="mt-5 w-full bg-gray-900 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2 group/btn">
             Continue Learning
-            <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+            <ArrowRight
+              size={18}
+              className="group-hover/btn:translate-x-1 transition-transform"
+            />
           </button>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { Sidebar } from "../src/components/Sidebar";
 export default function AppLayout() {
   return (
     <div className="flex min-h-screen">
-      {<Sidebar />}{" "}
+      <Sidebar isOpen={true} onClose={() => console.log("Sidebar closed")} />{" "}
       <main className="flex-1 p-6">
         <Outlet />
       </main>

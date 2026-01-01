@@ -1,7 +1,11 @@
 import { useState } from "react";
-import { Routes, Route, useLocation } from "react-router-dom"; // Import useLocation
-import { Sidebar } from "./components/Sidebar";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { Sidebar as StudentSidebar } from "./components/Sidebar";
+import TeacherSidebar from "./teacher/TeacherSidebar";
 import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
+
+// Student/Public Pages
 import Courses from "./pages/Courses";
 import Certificates from "./pages/Certificates";
 import MyCourses from "./pages/MyCourses";
@@ -14,65 +18,140 @@ import Register from "./pages/Register";
 import About from "./pages/About";
 import Mission from "./pages/Mission";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import  Contact  from "./pages/Contact";
+import Contact from "./pages/Contact";
 import TermsOfService from "./pages/TermsOfService";
 import HelpCenter from "./pages/HelpCenter";
 import Careers from "./pages/Careers";
 import Layout from "@/components/Layout/Layout";
 
+// Teacher Pages
+import TeacherDashboard from "./teacher/TeacherDashboard";
+import CreateCourse from "./teacher/CreateCourse";
+import MyTeaching from "./teacher/MyTeaching";
+import TeacherStudents from "./teacher/students";
+import TeacherQuizzes from "./teacher/quizzes";
+import TeacherCertificates from "./teacher/certificates";
+
 function AppContent() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [role, setRole] = useState<"student" | "teacher">("student");
   const location = useLocation();
 
-  // Define paths where you DON'T want the sidebar
-  const isHomePage = location.pathname === "/";
-  const isLoginpage = location.pathname === "/login";
-  const isRegisterPage = location.pathname === "/register";
+  // Pages where we don't want to show the sidebar or role switcher
+  const isAuthPage =
+    location.pathname === "/" ||
+    location.pathname === "/login" ||
+    location.pathname === "/register";
+
+  const showSidebar = !isAuthPage;
+
   return (
-    <div className="flex min-h-screen">
-      {!isHomePage && !isLoginpage && !isRegisterPage && (
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      )}
+    <div className="flex flex-col min-h-screen bg-background">
+      {/* 1. TOP NAVBAR (Always Static/Non-Responsive Links) */}
+      <Navbar />
 
-      {/* Main content */}
-      <div className="flex-1 ">
-        {/* Only show the mobile toggle button if sidebar is hidden (mobile) and NOT on home page */}
-        {!isHomePage && (
-          <Button
-            className="mb-4 lg:hidden"
-            onClick={() => setSidebarOpen(true)}
-          >
-            Open Menu
-          </Button>
+      <div className="flex flex-1">
+        {/* 2. SIDEBARS (Mobile Drawer / Desktop Sticky) */}
+        {showSidebar && role === "student" && (
+          <StudentSidebar
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+          />
         )}
-        <Navbar />
 
-        <Routes>
-           <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/my-courses" element={<MyCourses />} />
-          <Route path="/courses" element={<Courses />} />
-          <Route path="/certificates" element={<Certificates />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/Mission" element={<Mission />} />
-          <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-          <Route path="/Contact" element={<Contact />} />
-          <Route path="/TermsOfService" element={<TermsOfService/>} />
-          <Route path="/HelpCenter" element={<HelpCenter/>} />
-          <Route path="/Careers" element={<Careers/>} />
-          <Route path="*" element={<h1>Welcome</h1>} />
-          </Route>
-        </Routes>
+        {showSidebar && role === "teacher" && (
+          <TeacherSidebar 
+            isOpen={sidebarOpen} 
+            onClose={() => setSidebarOpen(false)} 
+          />
+        )}
+
+        {/* 3. MAIN CONTENT AREA */}
+        <main className="flex-1 flex flex-col min-w-0">
+          
+          {/* TOP ACTION BAR: Role Switcher & Mobile Menu Trigger */}
+          {!isAuthPage && (
+            <div className="flex items-center justify-between p-3 border-b bg-card">
+              {/* Hamburger Button - Visible only on Mobile (lg:hidden) */}
+              <Button
+                variant="outline"
+                size="icon"
+                className="lg:hidden"
+                onClick={() => setSidebarOpen(true)}
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+
+              {/* Role Switching Buttons */}
+              <div className="flex gap-2 ml-auto">
+                <Button
+                  size="sm"
+                  variant={role === "student" ? "default" : "outline"}
+                  onClick={() => setRole("student")}
+                >
+                  Student View
+                </Button>
+                <Button
+                  size="sm"
+                  variant={role === "teacher" ? "default" : "outline"}
+                  onClick={() => setRole("teacher")}
+                >
+                  Teacher View
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* PAGE ROUTES */}
+          <div className="flex-1">
+            <Routes>
+              <Route element={<Layout />}>
+                {/* PUBLIC ROUTES */}
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/mission" element={<Mission />} />
+                <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/termsofservice" element={<TermsOfService />} />
+                <Route path="/helpcenter" element={<HelpCenter />} />
+                <Route path="/careers" element={<Careers />} />
+
+                {/* STUDENT ROUTES */}
+                {role === "student" && (
+                  <>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/my-courses" element={<MyCourses />} />
+                    <Route path="/courses" element={<Courses />} />
+                    <Route path="/certificates" element={<Certificates />} />
+                    <Route path="/settings" element={<Settings />} />
+                  </>
+                )}
+
+                {/* TEACHER ROUTES */}
+                {role === "teacher" && (
+                  <>
+                    <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
+                    <Route path="/teacher/settings" element={<Settings />} />
+                    <Route path="/teacher/CreateCourse" element={<CreateCourse />} />
+                    <Route path="/teacher/MyTeaching" element={<MyTeaching />} />
+                    <Route path="/teacher/students" element={<TeacherStudents />} />
+                    <Route path="/teacher/quizzes" element={<TeacherQuizzes />} />
+                    <Route path="/teacher/certificates" element={<TeacherCertificates />} />
+                  </>
+                )}
+
+                <Route path="*" element={<div className="p-10 text-center text-2xl font-bold">404 - Page Not Found</div>} />
+              </Route>
+            </Routes>
+          </div>
+        </main>
       </div>
     </div>
   );
 }
 
-// In your main.tsx or App.tsx, ensure AppContent is inside a <BrowserRouter>
 export default function App() {
   return <AppContent />;
 }

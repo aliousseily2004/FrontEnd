@@ -81,17 +81,26 @@ export default function Footer() {
               <h4 className="font-medium mb-4">Resources</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <Link to="/HelpCenter" className="hover:text-primary transition">
+                  <Link
+                    to="/HelpCenter"
+                    className="hover:text-primary transition"
+                  >
                     Help Center
                   </Link>
                 </li>
                 <li>
-                  <Link to="/PrivacyPolicy" className="hover:text-primary transition">
+                  <Link
+                    to="/PrivacyPolicy"
+                    className="hover:text-primary transition"
+                  >
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link to="/TermsOfService" className="hover:text-primary transition">
+                  <Link
+                    to="/TermsOfService"
+                    className="hover:text-primary transition"
+                  >
                     Terms of Service
                   </Link>
                 </li>
@@ -107,18 +116,21 @@ export default function Footer() {
 
             <div className="flex items-center gap-4">
               <a
+                title="github"
                 href="#"
                 className="text-muted-foreground hover:text-primary transition"
               >
                 <Github className="h-5 w-5" />
               </a>
               <a
+                title="linkedin"
                 href="#"
                 className="text-muted-foreground hover:text-primary transition"
               >
                 <Linkedin className="h-5 w-5" />
               </a>
               <a
+                title="twitter"
                 href="#"
                 className="text-muted-foreground hover:text-primary transition"
               >

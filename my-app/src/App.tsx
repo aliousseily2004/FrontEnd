@@ -60,15 +60,14 @@ function AppContent() {
         )}
 
         {showSidebar && role === "teacher" && (
-          <TeacherSidebar 
-            isOpen={sidebarOpen} 
-            onClose={() => setSidebarOpen(false)} 
+          <TeacherSidebar
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
           />
         )}
 
         {/* 3. MAIN CONTENT AREA */}
         <main className="flex-1 flex flex-col min-w-0">
-          
           {/* TOP ACTION BAR: Role Switcher & Mobile Menu Trigger */}
           {!isAuthPage && (
             <div className="flex items-center justify-between p-3 border-b bg-card">
@@ -132,17 +131,42 @@ function AppContent() {
                 {/* TEACHER ROUTES */}
                 {role === "teacher" && (
                   <>
-                    <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
+                    <Route
+                      path="/teacher/dashboard"
+                      element={<TeacherDashboard />}
+                    />
                     <Route path="/teacher/settings" element={<Settings />} />
-                    <Route path="/teacher/CreateCourse" element={<CreateCourse />} />
-                    <Route path="/teacher/MyTeaching" element={<MyTeaching />} />
-                    <Route path="/teacher/students" element={<TeacherStudents />} />
-                    <Route path="/teacher/quizzes" element={<TeacherQuizzes />} />
-                    <Route path="/teacher/certificates" element={<TeacherCertificates />} />
+                    <Route
+                      path="/teacher/CreateCourse"
+                      element={<CreateCourse />}
+                    />
+                    <Route
+                      path="/teacher/MyTeaching"
+                      element={<MyTeaching />}
+                    />
+                    <Route
+                      path="/teacher/students"
+                      element={<TeacherStudents />}
+                    />
+                    <Route
+                      path="/teacher/quizzes"
+                      element={<TeacherQuizzes />}
+                    />
+                    <Route
+                      path="/teacher/certificates"
+                      element={<TeacherCertificates />}
+                    />
                   </>
                 )}
 
-                <Route path="*" element={<div className="p-10 text-center text-2xl font-bold">404 - Page Not Found</div>} />
+                <Route
+                  path="*"
+                  element={
+                    <div className="p-10 text-center text-2xl font-bold">
+                      404 - Page Not Found
+                    </div>
+                  }
+                />
               </Route>
             </Routes>
           </div>

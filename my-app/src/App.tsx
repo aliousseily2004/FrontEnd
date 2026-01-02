@@ -31,10 +31,14 @@ import MyTeaching from "./teacher/MyTeaching";
 import TeacherStudents from "./teacher/students";
 import TeacherQuizzes from "./teacher/quizzes";
 import TeacherCertificates from "./teacher/certificates";
+import { AdminSidebar } from "./components/Admin/AdminSideBar";
+import AdminOverview from "./components/Admin/Overview/Overview";
+import UserDetails from "./components/Admin/UserManagement/UserDetails";
+import UserManagement from "./components/Admin/UserManagement/UserManagement";
 
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [role, setRole] = useState<"student" | "teacher">("student");
+  const [role, setRole] = useState<"student" | "teacher" | "admin">("student");
   const location = useLocation();
 
   // Pages where we don't want to show the sidebar or role switcher
@@ -65,6 +69,12 @@ function AppContent() {
             onClose={() => setSidebarOpen(false)}
           />
         )}
+        {showSidebar && role === "admin" && (
+          <AdminSidebar
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+          />
+        )}
 
         {/* 3. MAIN CONTENT AREA */}
         <main className="flex-1 flex flex-col min-w-0">
@@ -90,12 +100,21 @@ function AppContent() {
                 >
                   Student View
                 </Button>
+
                 <Button
                   size="sm"
                   variant={role === "teacher" ? "default" : "outline"}
                   onClick={() => setRole("teacher")}
                 >
                   Teacher View
+                </Button>
+
+                <Button
+                  size="sm"
+                  variant={role === "admin" ? "default" : "outline"}
+                  onClick={() => setRole("admin")}
+                >
+                  Admin View
                 </Button>
               </div>
             </div>
@@ -158,7 +177,10 @@ function AppContent() {
                     />
                   </>
                 )}
-
+                {/*  admin routes */}
+                <Route path="/admin/dashboard" element={<AdminOverview />} />
+                <Route path="/admin/users/" element={<UserManagement />} />
+                <Route path="/admin/users/id" element={<UserDetails />} />
                 <Route
                   path="*"
                   element={

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 export default function UserManagement() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,8 +17,8 @@ export default function UserManagement() {
   const dummyUsers = [
     {
       id: "1",
-      name: "Ibrahim Dakroub",
-      email: "ibrahim@example.com",
+      name: "john D.",
+      email: "john@example.com",
       role: "Admin",
       status: "Active",
       joined: "2023-10-12",
@@ -39,6 +40,7 @@ export default function UserManagement() {
       joined: "2023-08-20",
     },
   ];
+  const navigate = useNavigate();
 
   return (
     <div className="p-6 lg:p-8 space-y-6 animate-fade-in">
@@ -150,7 +152,10 @@ export default function UserManagement() {
                   key={user.id}
                   className="hover:bg-secondary/30 transition-colors group"
                 >
-                  <td className="px-6 py-4">
+                  <td
+                    className="px-6 py-4"
+                    onClick={() => navigate(`/admin/users/id`)}
+                  >
                     <div className="flex items-center gap-3">
                       <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary text-xs">
                         {user.name.charAt(0)}

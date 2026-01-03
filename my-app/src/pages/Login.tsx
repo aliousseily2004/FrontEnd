@@ -1,6 +1,48 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      const res = await fetch(
+        `https://localhost:7126/api/auth/login
+`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include", // IMPORTANT for cookies
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg || "Login failed");
+      }
+
+      // If backend returns JSON you can read it, but not required for cookie auth
+      // const data = await res.json();
+
+      navigate("/admin/dashboard");
+    } catch (err: any) {
+      setError(err?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-background text-foreground">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-10 md:grid-cols-2 md:py-16">
@@ -64,7 +106,7 @@ export default function Login() {
               </p>
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit}>
               {/* Email */}
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium">
@@ -76,7 +118,10 @@ export default function Login() {
                   type="email"
                   placeholder="Test@email.com"
                   autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="h-11 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none transition focus:ring-2 focus:ring-ring"
+                  required
                 />
               </div>
 
@@ -100,7 +145,10 @@ export default function Login() {
                   type="password"
                   placeholder="••••••••"
                   autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="h-11 w-full rounded-xl border border-border bg-background px-3 text-sm outline-none transition focus:ring-2 focus:ring-ring"
+                  required
                 />
               </div>
 
@@ -124,12 +172,20 @@ export default function Login() {
                 </span>
               </div>
 
+              {/* Error */}
+              {error && (
+                <div className="rounded-xl border border-border bg-background/60 p-3 text-sm text-red-500">
+                  {error}
+                </div>
+              )}
+
               {/* Submit */}
               <button
-                type="button"
-                className="mt-2 inline-flex h-11 w-full items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:opacity-95 active:opacity-90"
+                type="submit"
+                disabled={loading}
+                className="mt-2 inline-flex h-11 w-full items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:opacity-95 active:opacity-90 disabled:opacity-60"
               >
-                Sign in
+                {loading ? "Signing in..." : "Sign in"}
               </button>
 
               {/* Divider */}
@@ -164,11 +220,10 @@ export default function Login() {
               </p>
             </form>
 
-            {/* Small helper row */}
             <div className="mt-6 rounded-xl border border-border bg-background/60 p-4">
               <p className="text-xs text-muted-foreground">
-                Tip: If you’re testing locally, make sure your API URL and
-                cookie settings (SameSite/Secure) match your frontend domain.
+                Tip: In dev, if cookies don’t persist, check backend cookie
+                SameSite/Secure and that you’re using credentials: "include".
               </p>
             </div>
           </div>

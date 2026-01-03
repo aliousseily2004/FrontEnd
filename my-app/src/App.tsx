@@ -180,7 +180,7 @@ function AppContent() {
                 {/*  admin routes */}
                 <Route path="/admin/dashboard" element={<AdminOverview />} />
                 <Route path="/admin/users/" element={<UserManagement />} />
-                <Route path="/admin/users/id" element={<UserDetails />} />
+                <Route path="/admin/users/:id" element={<UserDetails />} />
                 <Route
                   path="*"
                   element={

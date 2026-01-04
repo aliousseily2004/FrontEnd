@@ -28,7 +28,7 @@ export default function UserDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const API_BASE = "https://localhost:7126";
+  const API_BASE = "https://localhost:5251";
 
   useEffect(() => {
     let cancelled = false;

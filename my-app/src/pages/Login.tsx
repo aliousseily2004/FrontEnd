@@ -17,7 +17,7 @@ export default function Login() {
 
     try {
       const res = await fetch(
-        `https://localhost:7126/api/auth/login
+        `https://localhost:5251/api/auth/login
 `,
         {
           method: "POST",
